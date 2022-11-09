@@ -27,8 +27,8 @@ class ProductController extends Controller
                 return ResponseFormatter::error(null, 'Data produk tidak ditemukan', 404);
             }
         } 
-        $product = Product::with(['category', 'galleries']);
 
+        $product = Product::with(['category', 'galleries']);
         if($name) {
             $product->where('name', 'like', '%'.$name.'%');
         }
