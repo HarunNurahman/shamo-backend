@@ -54,6 +54,7 @@ class UserController extends Controller
         }
     }
 
+    // Login Controller
     public function login(Request $request) {
         try {
             $request->validate([
@@ -64,7 +65,7 @@ class UserController extends Controller
             $credentials = request(['email', 'password']);
             if(!Auth::attempt($credentials)) {
                 return ResponseFormatter::error([
-                    'message' => 'Unauthorized'
+                    'message' => 'Username atau Kata Sandi Salah'
                 ], 'Authentication Failed', 500);
             }
 
@@ -86,5 +87,27 @@ class UserController extends Controller
                 'error' => $error,
             ], 'Authentication Failed', 500);
         }
+    }
+
+    // Fetching User Data Controller
+    public function fetch(Request $request) {
+        return ResponseFormatter::success($request->user(), 'Data Profile Berhasil Diambil');
+    }
+
+    // Edit Profile Controller
+    public function updateProfile(Request $request) {
+        $data = $request->all();
+
+        $user = Auth::user();
+        $user->update($data);
+
+        return ResponseFormatter::success($user, 'Profile Berhasil Diubah');
+    }
+
+    // Logout Controller
+    public function logout(Request $request) {
+        $token = $request->user()->currentAccessToken()->delete();
+
+        return ResponseFormatter::success($token, 'Token Revoked');
     }
 }
