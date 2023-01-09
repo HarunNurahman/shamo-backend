@@ -54,7 +54,10 @@ class ProductCategoryController extends Controller
      */
     public function store(ProductCategoryRequest $request)
     {
-        //
+        $data = $request->all();
+        ProductCategory::create($data);
+
+        return redirect()->route('dashboard.category.index')->with('success', 'Category has been created');
     }
 
     /**
